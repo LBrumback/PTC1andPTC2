@@ -45,7 +45,8 @@ for (k in 1:length(startval$a2))
 }
 df<-df[!is.na(df$sigma),]
 result<-df[df$sigma==min((df$sigma)),][1,] # if converges for more than 1 set of starting values, use best fit
-while(abs(result$a5)>2*pi/0.005) result$a5<-abs(result$a5)-samplingRate*2*pi # |a5|<200*2*pi for identifiability
+while (result$a5 > pi*samplingRate) result$a5 <- result$a5 - 2*pi*samplingRate # for identifiability given finite sampling
+while (result$a5 < -pi*samplingRate) result$a5<-result$a5+2*pi*samplingRate	# for identifiability given finite sampling
 ptc2<-with(result, 1/(2*a4+a2)*1000) # multiplied by 1000 so PTC2 in milliseconds
 ptc1<-with(result, 2*a4*( (a2+a4)^2 + a5^2)  * ptc2/( a2*(a4^2+a5^2) )) #PTC1 in milliseconds
 c(ptc1,ptc2) # PTC1 and PTC2, in milliseconds
